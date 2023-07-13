@@ -32,7 +32,7 @@ package com.raywenderlich.android.wishlist.persistance
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.raywenderlich.android.wishlist.Wishlist
 
 interface WishlistDao {
@@ -52,8 +52,8 @@ open class WishlistDaoImpl : WishlistDao {
   }
 
   override fun findById(id: Int): LiveData<Wishlist> {
-    return Transformations.map(wishlists) {
-      it.find { wishlist -> wishlist.id == id }
+    return wishlists.map {
+      it.find { wishlist -> wishlist.id == id }!!
     }
   }
 
