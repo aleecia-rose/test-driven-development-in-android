@@ -5,6 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.javafaker.Faker
 import com.raywenderlich.android.punchline.Joke
@@ -47,5 +48,19 @@ class MainActivityTest:KoinTest {
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.buttonNewJoke))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun onLaunchJokeIsDisplayed(){
+        val joke = Joke(
+            faker.idNumber().valid(),
+            faker.lorem().sentence())
+        declareMock<Repository> {
+            whenever(getJoke())
+                .thenReturn(Single.just(joke))
+        }
+        ActivityScenario.launch(MainActivity::class.java)
+        onView(withId(R.id.textJoke))
+            .check(matches(withText(joke.joke)))
     }
 }
