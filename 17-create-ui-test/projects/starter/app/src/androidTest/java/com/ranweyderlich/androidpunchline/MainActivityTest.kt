@@ -9,12 +9,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.javafaker.Faker
 import com.raywenderlich.android.punchline.Joke
 import com.raywenderlich.android.punchline.MainActivity
+import com.raywenderlich.android.punchline.R
 import com.raywenderlich.android.punchline.Repository
 import io.reactivex.Single
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.definition.Kind
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
@@ -35,14 +35,15 @@ class MainActivityTest:KoinTest {
 
     @Test
     fun onLaunchButtonIsDisplayed(){
-       declareMock<Repository> {
-           whenever(getJoke())
-               .thenReturn(Single.just(
-                   Joke(
-                       faker.idNumber().valid(),
-                       faker.lorem().sentence())
-               ))
-       }
+        declareMock<Repository> {
+            whenever(getJoke())
+                .thenReturn(
+                    Single.just(
+                        Joke(
+                            faker.idNumber().valid(),
+                            faker.lorem().sentence())
+                    ))
+        }
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.buttonNewJoke))
             .check(matches(isDisplayed()))
